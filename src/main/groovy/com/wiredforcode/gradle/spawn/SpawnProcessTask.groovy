@@ -12,6 +12,7 @@ class SpawnProcessTask extends DefaultTask {
     String command
     String ready
     String directory = '.'
+    String lockFileName = '.pid.lock'
 
     SpawnProcessTask(){
         description = "Spawn a new server process in the background."
@@ -23,7 +24,7 @@ class SpawnProcessTask extends DefaultTask {
             throw new GradleException("Ensure that mandatory fields command and ready are set.")
         }
 
-        def pidFile = new File(directory, LOCK_FILE)
+        def pidFile = new File(directory, lockFileName)
         if(pidFile.exists()) throw new GradleException("Server already running!")
 
         Process process = buildProcess(directory, command)

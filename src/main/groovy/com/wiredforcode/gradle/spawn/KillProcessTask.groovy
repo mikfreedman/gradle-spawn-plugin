@@ -8,10 +8,11 @@ class KillProcessTask extends DefaultTask {
     public static final String LOCK_FILE = '.pid.lock'
 
     String directory = '.'
+    String lockFileName = '.pid.lock'
 
     @TaskAction
     void kill() {
-        def pidFile = new File(directory, LOCK_FILE)
+        def pidFile = new File(directory, lockFileName)
         if(!pidFile.exists()) throw new GradleException("No server running!")
 
         def pid = pidFile.text
