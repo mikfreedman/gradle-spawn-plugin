@@ -5,21 +5,24 @@ import org.gradle.api.tasks.TaskAction
 
 class KillProcessTask extends DefaultTask {
 
-    public static final String LOCK_FILE = '.pid.lock'
+  public static final String LOCK_FILE = '.pid.lock'
 
     String directory = '.'
     String lockFileName = '.pid.lock'
 
     @TaskAction
     void kill() {
-        def pidFile = new File(directory, lockFileName)
-        if(!pidFile.exists()) throw new GradleException("No server running!")
+      def pidFile = new File(directory, lockFileName)
+        if(pidFile.exists()) {
 
-        def pid = pidFile.text
-        def cmd = "kill $pid"
-        def process = cmd.execute()
-        process.waitFor()
-        pidFile.delete()
+          def pid = pidFile.text
+            def cmd = "kill $pid"
+            def process = cmd.execute()
+            process.waitFor()
+            pidFile.delete()
+        } else {
+          println('no pidfile found, skipping')
+        }
     }
 
 }
